@@ -763,3 +763,120 @@ It's important to note that while databases can store BLOBs, they typically aren
 
 "BOOLEAN" refers to a **data type** in programming that can only hold one of two values: **true** or **false**.  It's used to represent truth values in logical operations and conditional statements.  Booleans are fundamental to computer science because they allow programs to make decisions based on conditions.
 
+# 4. Sub languages
+
+The term "sublanguages" can refer to several different concepts depending on the context.  Here are a few interpretations:
+
+* **Specialized languages within a larger language:** This is the most common understanding.  A sublanguage is a subset of a natural language (like English, Spanish, etc.) that is used in a specific domain or context. These sublanguages often have restricted vocabulary, grammar, and syntax tailored to that domain.  Examples include:
+
+    * **Medical sublanguage:**  Uses specific terminology (e.g., "angina pectoris," "tachycardia") and sentence structures common in medical reports and conversations.
+    * **Legal sublanguage:**  Employs formal language, specific legal terms (e.g., "habeas corpus," "prima facie"), and structured arguments.
+    * **Technical sublanguages:**  Used in fields like engineering, computer science, or finance, characterized by technical jargon and precise definitions.
+    * **Sublanguages in programming:** Though not natural languages, programming languages often have sublanguages or dialects. For instance, different versions of SQL or variations within a family of programming languages (like different flavors of Lisp).
+
+
+* **Languages embedded within another language:**  This can refer to code embedded within another language (e.g., JavaScript within HTML), or a smaller, simpler language designed to be used *within* a larger, more complex system.
+
+
+* **Linguistic analysis perspective:** In linguistics, the term might refer to different levels of analysis within a language.  For instance, a phonological sublanguage might focus solely on sounds, while a syntactic sublanguage would concentrate on sentence structure.  This is a more technical and less commonly used interpretation of the term.
+
+
+* **In Artificial Intelligence (AI):**  Sublanguages play a crucial role in Natural Language Processing (NLP).  Building AI systems that understand and process text often requires focusing on specific sublanguages to handle the complexities and nuances of specialized domains.
+
+
+To understand what "sublanguages" means in a particular context, you need to consider the surrounding discussion.  The examples above illustrate the range of possibilities.  Providing more context about where you encountered the term will help clarify its meaning.
+
+## -  DML
+
+DML stands for **Data Manipulation Language**.  It's a category of SQL commands used to manage data within a database.  This includes actions like:
+
+* **Creating new data:**  `INSERT` statements add new rows (records) to a table.
+* **Reading existing data:** `SELECT` statements retrieve data from one or more tables.
+* **Updating existing data:** `UPDATE` statements modify existing data within rows.
+* **Deleting existing data:** `DELETE` statements remove rows from a table.
+
+
+In short, DML commands are the core of how you interact with and change the information stored in a relational database.  They are distinct from DDL (Data Definition Language), which deals with the structure of the database itself (creating tables, defining indexes, etc.).
+
+## -  DDL
+
+DDL stands for **Data Definition Language**.  It's a subset of SQL used to define the database structure or schema.  This includes creating, modifying, and deleting database objects like tables, indexes, views, and more.
+
+Here's a breakdown of common DDL commands and their uses:
+
+* **`CREATE`:** Used to create new database objects.
+
+    * `CREATE TABLE`: Creates a new table, specifying column names, data types, constraints, etc.
+    * `CREATE INDEX`: Creates an index on a table to speed up data retrieval.
+    * `CREATE VIEW`: Creates a virtual table based on the result-set of an SQL statement.
+    * `CREATE SCHEMA`: Creates a new schema (a container for database objects).
+    * `CREATE DATABASE`: Creates a new database.
+
+
+* **`ALTER`:** Used to modify existing database objects.
+
+    * `ALTER TABLE`: Modifies an existing table by adding, deleting, or modifying columns, constraints, etc.
+    * `ALTER INDEX`: Modifies an existing index.
+
+
+* **`DROP`:** Used to delete database objects.
+
+    * `DROP TABLE`: Deletes an existing table.
+    * `DROP INDEX`: Deletes an existing index.
+    * `DROP VIEW`: Deletes an existing view.
+    * `DROP SCHEMA`: Deletes an existing schema.
+    * `DROP DATABASE`: Deletes an existing database.
+
+
+* **`TRUNCATE`:** Used to remove all data from a table, but the table structure remains.  It's generally faster than `DELETE` because it doesn't log individual row deletions.
+
+
+* **`COMMENT`:** Used to add comments to database objects (e.g., tables, columns).
+
+
+**Example:**
+
+Let's say we want to create a table named `Customers` with columns for ID, Name, and City:
+
+```sql
+CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY,
+    CustomerName VARCHAR(255),
+    City VARCHAR(255)
+);
+```
+
+This is a DDL statement.  It defines the structure of the `Customers` table.  After executing this statement, the table will exist in the database, ready to store data.
+
+
+In short, DDL is crucial for setting up and managing the structure of your database.  It's distinct from DML (Data Manipulation Language), which is used for adding, updating, and deleting data *within* the database tables.
+
+## -  DQL
+
+DQL stands for **Data Query Language**.  It's a subset of SQL (Structured Query Language) used to retrieve data from a database.  It doesn't modify the data in any way; it only selects and presents information.
+
+The primary command in DQL is `SELECT`.  This command, along with various clauses (like `FROM`, `WHERE`, `ORDER BY`, `GROUP BY`, `HAVING`, etc.), allows you to specify which data you want to retrieve and how you want it to be formatted.
+
+Here's a simple example of a DQL statement:
+
+```sql
+SELECT FirstName, LastName
+FROM Employees
+WHERE Department = 'Sales';
+```
+
+This query selects the `FirstName` and `LastName` columns from the `Employees` table, only showing rows where the `Department` column is equal to 'Sales'.  This demonstrates the basic functionality of DQL: querying and retrieving data without making any changes to the database's structure or content.
+
+## -  DCL
+
+DCL stands for **Data Control Language**.  It's a category of SQL commands used to control access to data in a database.  These commands manage user permissions and authorizations.  Common DCL commands include:
+
+* **GRANT:**  Gives specific privileges (like SELECT, INSERT, UPDATE, DELETE) on database objects (tables, views, etc.) to users or roles.
+* **REVOKE:** Removes privileges previously granted to users or roles.
+
+Essentially, DCL commands are all about security and who can do what within the database.
+
+## -  TCL
+
+TCL is an abbreviation for **Technology, Creativity, and Life**.  It's also the name of a large multinational electronics company, **TCL Technology Holdings**, that manufactures and sells consumer electronics such as televisions, mobile phones, and home appliances.  Depending on the context, either meaning could be correct.
+
