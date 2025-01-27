@@ -280,3 +280,559 @@ DBMS (Database Management System) in the context of SQL refers to the software s
 
 In short, SQL is the *language* you use, and the DBMS is the *system* that executes those commands and manages the database itself. They work together to provide a complete database solution.
 
+# 2. Basic SQL Syntax
+
+Basic SQL syntax revolves around a few core commands used to interact with databases.  Here's a breakdown of the fundamental elements and common commands, along with examples:
+
+**1. Defining the Structure (Schema):**
+
+* **`CREATE TABLE`:** This command creates a new table in the database.  You specify the table name and the columns (fields) within it, along with their data types.
+
+```sql
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    FirstName VARCHAR(255),
+    LastName VARCHAR(255),
+    Email VARCHAR(255),
+    Salary DECIMAL(10, 2)
+);
+```
+* `INT`: Integer
+* `VARCHAR(255)`: Variable-length string (up to 255 characters)
+* `DECIMAL(10, 2)`: Decimal number (10 total digits, 2 after the decimal point)
+* `PRIMARY KEY`: Uniquely identifies each row in the table.
+
+**2. Inserting Data:**
+
+* **`INSERT INTO`:** This command adds new rows (records) into a table.
+
+```sql
+INSERT INTO Employees (EmployeeID, FirstName, LastName, Email, Salary)
+VALUES (1, 'John', 'Doe', 'john.doe@example.com', 60000.00),
+       (2, 'Jane', 'Smith', 'jane.smith@example.com', 75000.00);
+```
+
+**3. Retrieving Data:**
+
+* **`SELECT`:** This is the most frequently used command. It retrieves data from one or more tables.
+
+```sql
+-- Select all columns from the Employees table
+SELECT * FROM Employees;
+
+-- Select specific columns
+SELECT FirstName, LastName, Salary FROM Employees;
+
+-- Select data based on a condition (WHERE clause)
+SELECT * FROM Employees WHERE Salary > 65000;
+
+--Filtering using multiple conditions (AND, OR)
+SELECT * FROM Employees WHERE Salary > 65000 AND LastName = 'Smith';
+SELECT * FROM Employees WHERE Salary > 65000 OR LastName = 'Smith';
+
+-- Sorting the results (ORDER BY clause)
+SELECT * FROM Employees ORDER BY Salary DESC; -- DESC for descending order, ASC (default) for ascending
+
+-- Limiting the number of results (LIMIT clause - specific to some databases like MySQL, PostgreSQL)
+SELECT * FROM Employees LIMIT 5;
+
+```
+
+**4. Updating Data:**
+
+* **`UPDATE`:** This command modifies existing data in a table.
+
+```sql
+UPDATE Employees SET Salary = 80000.00 WHERE EmployeeID = 2;
+```
+
+**5. Deleting Data:**
+
+* **`DELETE FROM`:** This command removes rows from a table.  **Use caution** with `DELETE` as it permanently removes data.
+
+```sql
+DELETE FROM Employees WHERE EmployeeID = 1;
+```
+
+**6. Joining Tables (for multiple tables):**
+
+* **`JOIN`:**  Combines rows from two or more tables based on a related column.  There are different types of joins (INNER JOIN, LEFT JOIN, RIGHT JOIN, FULL OUTER JOIN).
+
+```sql
+--Example assuming you have another table called "Departments"
+SELECT Employees.FirstName, Employees.LastName, Departments.DepartmentName
+FROM Employees
+INNER JOIN Departments ON Employees.DepartmentID = Departments.DepartmentID; --assuming a DepartmentID column exists in both
+```
+
+**7. Grouping Data:**
+
+* **`GROUP BY`:** Groups rows that have the same values in specified columns into summary rows, like calculating the average salary per department.
+
+```sql
+--Example (requires a DepartmentID column in Employees table)
+SELECT DepartmentID, AVG(Salary) AS AverageSalary
+FROM Employees
+GROUP BY DepartmentID;
+```
+
+**8.  Other Important Clauses:**
+
+* **`WHERE`:** Filters the data based on specified conditions.
+* **`ORDER BY`:** Sorts the results.
+* `LIMIT` (or `TOP` in some databases): Restricts the number of rows returned.
+* `HAVING`: Filters grouped data (used with `GROUP BY`).
+
+
+These are the fundamental building blocks of SQL.  The specific syntax might vary slightly depending on the database system you are using (e.g., MySQL, PostgreSQL, SQL Server, Oracle), but the core concepts remain the same.  Remember to always back up your data before performing any `UPDATE` or `DELETE` operations.
+
+## -  SELECT
+
+The `SELECT` statement in SQL is used to query data from one or more tables.  It's the fundamental command for retrieving information from a database.  Here's a breakdown of its structure and usage:
+
+**Basic Syntax:**
+
+```sql
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+```
+
+* **`SELECT` Clause:** Specifies the columns you want to retrieve.  You can list individual columns, use `*` to select all columns, or use functions to manipulate data.
+
+* **`FROM` Clause:** Specifies the table(s) from which you're retrieving data.
+
+* **`WHERE` Clause (Optional):** Filters the results based on a specified condition.  Only rows that meet the condition are included in the output.
+
+**Examples:**
+
+1. **Select all columns from a table:**
+
+```sql
+SELECT *
+FROM employees;
+```
+
+This retrieves all columns and rows from the `employees` table.
+
+2. **Select specific columns from a table:**
+
+```sql
+SELECT employee_id, first_name, last_name
+FROM employees;
+```
+
+This retrieves only the `employee_id`, `first_name`, and `last_name` columns from the `employees` table.
+
+3. **Select columns with a WHERE clause:**
+
+```sql
+SELECT employee_id, first_name, last_name
+FROM employees
+WHERE department_id = 10;
+```
+
+This retrieves the specified columns only for employees in department 10.
+
+4. **Using functions in the SELECT clause:**
+
+```sql
+SELECT first_name, last_name, salary * 1.10 AS increased_salary
+FROM employees;
+```
+
+This calculates a 10% increase in salary and displays it as `increased_salary`.
+
+5. **Selecting distinct values:**
+
+```sql
+SELECT DISTINCT department_id
+FROM employees;
+```
+
+This retrieves only unique `department_id` values, eliminating duplicates.
+
+6. **Using aliases:**
+
+```sql
+SELECT e.employee_id, e.first_name
+FROM employees e;
+```
+
+This uses the alias `e` for the `employees` table to shorten the query and improve readability.  This is particularly helpful when joining multiple tables.
+
+
+**Advanced features:**
+
+* **`ORDER BY` Clause:** Sorts the results based on one or more columns.  `ASC` (ascending) is the default; `DESC` (descending) can be specified.
+
+* **`GROUP BY` Clause:** Groups rows with the same values in specified columns.  Often used with aggregate functions like `COUNT`, `SUM`, `AVG`, `MIN`, and `MAX`.
+
+* **`HAVING` Clause:** Filters grouped results based on a condition.  Used with `GROUP BY`.
+
+* **`JOIN` Clause:** Combines rows from two or more tables based on a related column.  Different types of joins exist (INNER JOIN, LEFT JOIN, RIGHT JOIN, FULL OUTER JOIN).
+
+* **`LIMIT` Clause (in some databases):** Restricts the number of rows returned.
+
+* **Subqueries:**  Nested queries within the main query, allowing for more complex filtering and data manipulation.
+
+
+The `SELECT` statement is highly versatile and forms the basis of most SQL queries. Mastering its various features is crucial for effectively working with databases. Remember to consult the documentation for your specific database system (MySQL, PostgreSQL, SQL Server, Oracle, etc.) as syntax and supported features may vary slightly.
+
+## -  FROM
+
+The `FROM` clause in SQL specifies the table or tables from which to retrieve data.  It's a fundamental part of any `SELECT` statement (and some other SQL statements like `UPDATE` and `DELETE`).
+
+Here's a breakdown of its usage and important aspects:
+
+**Basic Syntax:**
+
+```sql
+SELECT column1, column2, ...
+FROM table_name;
+```
+
+* **`SELECT`:** Specifies the columns you want to retrieve.  If you want all columns, use `SELECT *`.
+* **`FROM`:**  Indicates the table where the columns are located.
+* **`table_name`:** The name of the table from which data will be retrieved.
+
+
+**Example:**
+
+Let's say you have a table named `Customers` with columns `CustomerID`, `Name`, `City`, and `Country`.  To retrieve all customer names and cities:
+
+```sql
+SELECT Name, City
+FROM Customers;
+```
+
+**Multiple Tables (Joins):**
+
+The `FROM` clause becomes more powerful when you need data from multiple tables.  This is done using joins.
+
+```sql
+SELECT column1, column2, ...
+FROM table1
+JOIN table2 ON table1.join_column = table2.join_column;
+```
+
+* **`JOIN`:** Specifies how to combine rows from `table1` and `table2`.  There are different types of joins (INNER JOIN, LEFT JOIN, RIGHT JOIN, FULL OUTER JOIN).
+* **`ON`:** Specifies the condition that determines which rows from the tables are combined. The condition usually involves comparing columns with common values (a "join key").
+
+**Example with a JOIN:**
+
+Suppose you have a `Orders` table with columns `OrderID`, `CustomerID`, and `OrderDate`, and you want to get the customer name along with their order information:
+
+```sql
+SELECT c.Name, o.OrderID, o.OrderDate
+FROM Customers c
+JOIN Orders o ON c.CustomerID = o.CustomerID;
+```
+
+This uses an `INNER JOIN` to combine `Customers` and `Orders` based on matching `CustomerID`.  Only customers with corresponding orders will be included in the result.
+
+**Subqueries in FROM:**
+
+You can also use subqueries within the `FROM` clause to create temporary result sets.  This is useful for complex queries.
+
+```sql
+SELECT column1, column2, ...
+FROM (SELECT ... FROM ... WHERE ...) AS subquery_name;
+```
+
+* **`AS subquery_name`:** Gives an alias to the subquery, making it easier to reference in the main query.
+
+
+**Common Mistakes:**
+
+* **Incorrect table name:** Double-check the spelling and case of your table name.
+* **Missing or incorrect join conditions:** When joining tables, ensure that your `ON` clause accurately specifies the relationship between the tables.
+* **Ambiguous column names:** If two tables have columns with the same name, use aliases (e.g., `c.Name`, `o.Name`) to clarify which column you're referring to.
+
+
+The `FROM` clause is essential for specifying the data source in your SQL queries.  Understanding its functionality and how to use it with joins and subqueries is critical for writing effective and efficient SQL.
+
+## -  WHERE 
+
+The `WHERE` clause in SQL is used to filter records.  It specifies conditions that must be met for a row to be included in the result set of a `SELECT`, `UPDATE`, or `DELETE` statement.
+
+**Syntax:**
+
+```sql
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+```
+
+* **`SELECT column1, column2, ...`**: Specifies the columns you want to retrieve.  If you use `*`, it selects all columns.
+* **`FROM table_name`**: Specifies the table from which to retrieve the data.
+* **`WHERE condition`**:  This is the crucial part.  It filters the rows based on the specified condition.  The condition can involve comparison operators, logical operators, and functions.
+
+**Comparison Operators:**
+
+* `=`  Equals
+* `!=` or `<>` Not equals
+* `>`  Greater than
+* `<`  Less than
+* `>=` Greater than or equals to
+* `<=` Less than or equals to
+
+**Logical Operators:**
+
+* `AND`  Both conditions must be true.
+* `OR`  At least one condition must be true.
+* `NOT`  Reverses the condition.
+
+**Examples:**
+
+1. **Selecting employees with a salary greater than 50000:**
+
+```sql
+SELECT *
+FROM employees
+WHERE salary > 50000;
+```
+
+2. **Selecting customers from a specific city:**
+
+```sql
+SELECT *
+FROM customers
+WHERE city = 'London';
+```
+
+3. **Selecting products that are either in stock or have a price less than 10:**
+
+```sql
+SELECT *
+FROM products
+WHERE in_stock = 1 OR price < 10;
+```
+
+4. **Selecting orders placed after a specific date:**
+
+```sql
+SELECT *
+FROM orders
+WHERE order_date > '2023-10-26';
+```
+
+5. **Selecting employees who are not managers:**
+
+```sql
+SELECT *
+FROM employees
+WHERE NOT job_title = 'Manager';
+```
+
+6. **Using `BETWEEN` (inclusive range):**
+
+```sql
+SELECT *
+FROM products
+WHERE price BETWEEN 10 AND 20;
+```
+
+7. **Using `LIKE` for pattern matching:**
+
+```sql
+SELECT *
+FROM customers
+WHERE name LIKE '%Smith%'; -- Finds names containing "Smith"
+```
+
+8. **Using `IN` for multiple values:**
+
+```sql
+SELECT *
+FROM products
+WHERE category IN ('Electronics', 'Clothing');
+```
+
+9. **Using `IS NULL` to check for NULL values:**
+
+```sql
+SELECT *
+FROM customers
+WHERE email IS NULL;
+```
+
+
+The `WHERE` clause is essential for efficient data retrieval and manipulation in SQL.  By carefully crafting your conditions, you can extract precisely the data you need from your database.  Remember to always consider the data types when writing your conditions to avoid errors.
+
+## -  ORDER BY
+
+The `ORDER BY` clause in SQL is used to sort the result set of a query.  It's crucial for presenting data in a meaningful and easily understandable way. Here's a breakdown of how it works:
+
+**Basic Syntax:**
+
+```sql
+SELECT column1, column2, ...
+FROM table_name
+ORDER BY column1 [ASC | DESC], column2 [ASC | DESC], ...;
+```
+
+* **`SELECT column1, column2, ...`**: Specifies the columns you want to retrieve.
+* **`FROM table_name`**: Indicates the table from which to retrieve the data.
+* **`ORDER BY column1 [ASC | DESC], column2 [ASC | DESC], ...`**:  This is the core of the `ORDER BY` clause.  It specifies the column(s) to sort by and the sorting order.
+
+    * **`column1`, `column2`, ...**: The columns to sort by. You can specify multiple columns for multi-level sorting.
+    * **`ASC` (Ascending)**: Sorts the data in ascending order (from smallest to largest for numbers, alphabetically for strings). This is the default if you don't specify `ASC` or `DESC`.
+    * **`DESC` (Descending)**: Sorts the data in descending order (from largest to smallest for numbers, reverse alphabetically for strings).
+
+
+**Examples:**
+
+Let's assume we have a table named `Customers` with columns `CustomerID`, `FirstName`, `LastName`, and `City`.
+
+1. **Sorting by a single column in ascending order (default):**
+
+```sql
+SELECT *
+FROM Customers
+ORDER BY LastName;
+```
+This will sort the results alphabetically by the `LastName` column in ascending order.
+
+2. **Sorting by a single column in descending order:**
+
+```sql
+SELECT FirstName, LastName
+FROM Customers
+ORDER BY City DESC;
+```
+This will sort the results by the `City` column in descending order.
+
+3. **Sorting by multiple columns:**
+
+```sql
+SELECT *
+FROM Customers
+ORDER BY LastName ASC, FirstName DESC;
+```
+This will first sort by `LastName` in ascending order.  If there are multiple customers with the same `LastName`, it will then sort them by `FirstName` in descending order.
+
+4. **Sorting by a calculated column:**
+
+```sql
+SELECT FirstName, LastName, (LENGTH(LastName) - LENGTH(REPLACE(LastName, 'a', ''))) AS CountOfA
+FROM Customers
+ORDER BY CountOfA DESC;
+```
+This sorts by the number of times the letter 'a' appears in the `LastName`, in descending order.
+
+
+**Important Notes:**
+
+* `ORDER BY` is typically placed at the end of the `SELECT` statement.
+* If you don't include an `ORDER BY` clause, the order of the results is not guaranteed; it might vary depending on the database system and other factors.
+* `ORDER BY` operates on the data *after* any `WHERE` clause filters have been applied.
+* Sorting on very large tables can significantly impact performance.  Consider using indexes on the columns you are sorting by to optimize performance.
+* You can use column aliases (as defined in the `SELECT` list) in the `ORDER BY` clause.
+
+
+Understanding `ORDER BY` is crucial for writing efficient and readable SQL queries that present data in a user-friendly format. Remember to choose the appropriate sorting order and columns to meet your specific needs.
+
+## -  GROUP BY 
+
+The `GROUP BY` clause in SQL is used to group rows that have the same values in specified columns into summary rows, like "sum," "average," or "count."  It's essential for performing aggregate functions on subsets of your data.
+
+**Basic Syntax:**
+
+```sql
+SELECT columnA, aggregate_function(columnB)
+FROM table_name
+GROUP BY columnA;
+```
+
+* **`SELECT columnA`:** This specifies the column(s) you want to group by.  The values in this column will determine the groups.  You can select other columns, but they must be in the `GROUP BY` clause or be used with aggregate functions.
+
+* **`aggregate_function(columnB)`:** This is an aggregate function (like `SUM`, `AVG`, `COUNT`, `MIN`, `MAX`) applied to another column (`columnB`). The function calculates a single value for each group.
+
+* **`FROM table_name`:** Specifies the table from which to retrieve the data.
+
+* **`GROUP BY columnA`:** Groups rows based on the values in `columnA`.  All rows with the same value in `columnA` will be grouped together.
+
+
+**Examples:**
+
+Let's say we have a table called `orders` with the following data:
+
+| customer_id | order_total |
+|---|---|
+| 1 | 100 |
+| 1 | 50 |
+| 2 | 200 |
+| 3 | 75 |
+| 3 | 125 |
+| 2 | 150 |
+
+
+**1. Finding the total order value for each customer:**
+
+```sql
+SELECT customer_id, SUM(order_total) AS total_spent
+FROM orders
+GROUP BY customer_id;
+```
+
+This will return:
+
+| customer_id | total_spent |
+|---|---|
+| 1 | 150 |
+| 2 | 350 |
+| 3 | 200 |
+
+
+**2. Finding the average order value for each customer:**
+
+```sql
+SELECT customer_id, AVG(order_total) AS average_order
+FROM orders
+GROUP BY customer_id;
+```
+
+**3. Counting the number of orders for each customer:**
+
+```sql
+SELECT customer_id, COUNT(*) AS number_of_orders
+FROM orders
+GROUP BY customer_id;
+```
+
+**4. Grouping by multiple columns:**
+
+You can group by multiple columns.  For example, to find the total order value for each customer in each month (assuming you have a `order_date` column):
+
+```sql
+SELECT customer_id, STRFTIME('%Y-%m', order_date) AS order_month, SUM(order_total) AS monthly_total
+FROM orders
+GROUP BY customer_id, order_month
+ORDER BY customer_id, order_month;
+```
+
+
+**HAVING Clause:**
+
+The `HAVING` clause is used to filter groups after they have been created by `GROUP BY`.  It's similar to `WHERE`, but `WHERE` filters rows *before* grouping, while `HAVING` filters groups *after* grouping.
+
+```sql
+SELECT customer_id, SUM(order_total) AS total_spent
+FROM orders
+GROUP BY customer_id
+HAVING SUM(order_total) > 200;
+```
+
+This will only show customers whose total order value is greater than 200.
+
+
+**Important Considerations:**
+
+* **Non-aggregated columns in SELECT:**  Any column in the `SELECT` list that is *not* an aggregate function *must* appear in the `GROUP BY` clause.
+* **Data type compatibility:** Ensure the data types of columns used in `GROUP BY` and aggregate functions are compatible.
+* **NULL values:**  `NULL` values are generally treated as distinct groups unless explicitly handled (e.g., using `COALESCE` or `IFNULL`).
+
+
+Understanding `GROUP BY` is crucial for summarizing and analyzing data effectively in SQL.  It allows you to gain insights from large datasets by aggregating information based on shared characteristics.
+
